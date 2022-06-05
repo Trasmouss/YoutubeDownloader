@@ -12,19 +12,19 @@ Youtube Downloader with pytube and tkinter GUI
     if you get this error
     pytube.exceptions.RegexMatchError: __init__: could not find match for ^\w+\W
     
-    open pytube library
+    _open pytube library_
     
     venv/Lib/site-packages/pytube/cipher.py
     
-    file and replace line 30 
+    _file and replace line 30_ 
     
     var_regex = re.compile(r"^\w+\W")
     
-    with this
+    _with this_
 
     var_regex = re.compile(r"^\$*\w+\W")
 
-    don't forget to save...
+    _don't forget to save..._
 
     Have fun :)
 
