@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from pytube import YouTube
 import threading
 
@@ -17,6 +18,7 @@ class Window(object):
 
         self.yt = ""
         self.video = ""
+        self.tag = 0
 
         self.alert = Label(text="Wellcome to Youtube Downloader. Pleace insert Youtube Link.",
                            fg="red",
@@ -40,6 +42,20 @@ class Window(object):
         self.list.place(x=120, y=115, width=455)
         self.list.bind('<<ListboxSelect>>', self.items_selected)
 
+        self.alertbottom = Label(text="Download : ", fg="red", font="Helvetica 10 bold")
+        self.alertbottom.place(x=5, y=300)
+
+        self.pb = ttk.Progressbar(
+            self.window,
+            orient='horizontal',
+            mode='determinate',
+            length=590
+        )
+
+        self.pb.place(x=5000, y=0)
+
+        self.pb["value"] = 0
+
         self.get_btn = Button(text="GET VIDEOS", command=self.get_videos)
         self.get_btn.place(x=225, y=350)
 
@@ -47,7 +63,16 @@ class Window(object):
         self.download_btn.place(x=325, y=350)
 
     def items_selected(self, event):
-        pass
+        # get selected indices
+        selected_indices = self.list.curselection()
+        # get selected items
+        selected = ",".join([self.list.get(i) for i in selected_indices])
+        # msg = f'You selected: {selected}'
+        x = selected.split(" ")
+        self.alertbottom["text"] = "Download : " + selected
+        self.download_btn["state"] = NORMAL
+        self.tag = x[0]
+        # print(x[0])
 
     def set_videos(self):
         self.alert.config(text="Please Wait")
@@ -74,19 +99,28 @@ class Window(object):
                    " VD : " + str(stream.video_codec) + \
                    " TYPE : " + str(stream.mime_type)
             self.list.insert(END, line)
-            # print(stream)
             self.get_btn["state"] = NORMAL
 
     def download(self):
-        pass
+        threading.Thread(target=self.downloadfile).start()
 
-    def on_progress(self):
-        pass
+    def downloadfile(self):
+        self.download_btn["state"] = DISABLED
+        self.pb.place(x=5, y=320)
+        stream = self.video.get_by_itag(self.tag)
+        stream.download(self.pathentry.get(), skip_existing=False)
 
-    def on_complete(self):
-        pass
+    def on_progress(self, stream, chunk, bytes_remaining):
+        total_size = stream.filesize
+        bytes_downloaded = total_size - bytes_remaining
+        percentage_of_completion = bytes_downloaded / total_size * 100
+        self.pb['value'] = int(percentage_of_completion)
 
-
+    def on_complete(self, stream, path):
+        self.alertbottom["text"] = path
+        self.download_btn["state"] = NORMAL
+        self.pb.place(x=5000, y=0)
+        self.pb["value"] = 0
 
 
 # Press the green button in the gutter to run the script.
