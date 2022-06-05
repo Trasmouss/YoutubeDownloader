@@ -31,6 +31,13 @@ class Window(object):
         self.pathentry.place(x=120, y=87)
         self.pathentry.insert(0, "E:/Footage")
 
+        self.list = Listbox()
+        self.list.place(x=120, y=115, width=455)
+        self.list.bind('<<ListboxSelect>>', self.items_selected)
+
+    def items_selected(self, event):
+        pass
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
