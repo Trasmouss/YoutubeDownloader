@@ -35,8 +35,21 @@ class Window(object):
         self.list.place(x=120, y=115, width=455)
         self.list.bind('<<ListboxSelect>>', self.items_selected)
 
+        self.get_btn = Button(text="GET VIDEOS", command=self.get_videos)
+        self.get_btn.place(x=225, y=350)
+
+        self.download_btn = Button(text="DOWNLOAD", command=self.download, state=DISABLED)
+        self.download_btn.place(x=325, y=350)
+
     def items_selected(self, event):
         pass
+
+    def get_videos(self):
+        pass
+
+    def download(self):
+        pass
+
 
 
 # Press the green button in the gutter to run the script.
