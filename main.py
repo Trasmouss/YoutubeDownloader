@@ -24,6 +24,13 @@ class Window(object):
         self.linkentry = Entry(width=75)
         self.linkentry.place(x=120, y=52)
 
+        pathlabel = Label(text="Download Path : ", font="Helvetica 10 bold")
+        pathlabel.place(x=5, y=85)
+
+        self.pathentry = Entry(width=75)
+        self.pathentry.place(x=120, y=87)
+        self.pathentry.insert(0, "E:/Footage")
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
