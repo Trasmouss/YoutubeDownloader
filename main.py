@@ -16,8 +16,13 @@ class Window(object):
         self.alert = Label(text="Wellcome to Youtube Downloader. Pleace insert Youtube Link.",
                            fg="red",
                            font="Helvetica 10 bold")
-
         self.alert.place(x=5, y=15)
+
+        linklabel = Label(text="Youtube Link : ", font="Helvetica 10 bold")
+        linklabel.place(x=5, y=50)
+
+        self.linkentry = Entry(width=75)
+        self.linkentry.place(x=120, y=52)
 
 
 # Press the green button in the gutter to run the script.
