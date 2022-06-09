@@ -19,6 +19,7 @@ class Window(object):
         self.fg = "#CECCBE"
         self.yt = ""
         self.video = ""
+        self.audio = ""
         self.tag = 0
 
         self.alert = Label(text="Wellcome to Youtube Downloader. Pleace insert Youtube Link.",
@@ -36,12 +37,15 @@ class Window(object):
         self.linkentry.grid(row=1, column=1)
 
         pathlabel = Label(text="Download Path : ", font="Helvetica 10 bold", bg=self.bg, fg=self.fg)
-        pathlabel.grid(row=2, column=0)
+        pathlabel.grid(row=2, column=0, sticky=E)
 
         self.pathentry = Entry(width=75, bg=self.bg, fg=self.fg)
         self.pathentry.grid(row=2, column=1)
 
         self.pathentry.insert(0, "E:/Footage")
+
+        listlabel = Label(text="Videos : ", font="Helvetica 10 bold", bg=self.bg, fg=self.fg)
+        listlabel.grid(row=3, column=0, sticky=NE)
 
         self.list = Listbox(bg=self.bg, fg=self.fg, width=75)
         self.list.grid(row=3, column=1)
@@ -86,8 +90,8 @@ class Window(object):
         self.yt = YouTube(self.linkentry.get(), on_progress_callback=self.on_progress,
                           on_complete_callback=self.on_complete)
         self.alert.config(text=self.yt.title)
-        self.video = self.yt.streams
-        self.setlist()
+        self.video = self.yt.streams.filter(file_extension='mp4')
+        self.set_video_list()
 
     def get_videos(self):
         if self.linkentry.get() is not "" and self.pathentry.get() is not "":
@@ -96,15 +100,13 @@ class Window(object):
         else:
             self.alert.config(text="Please Set All Fields.")
 
-    def setlist(self):
+    def set_video_list(self):
         self.video = self.video.order_by('resolution')
         for stream in self.video:
             line = str(stream.itag) + \
                    " RES : " + str(stream.resolution) + \
                    " FPS : " + str(stream.fps) + \
-                   " AU : " + str(stream.audio_codec) + \
-                   " VD : " + str(stream.video_codec) + \
-                   " TYPE : " + str(stream.mime_type)
+                   " ABR : " + str(stream.abr)
             self.list.insert(END, line)
             self.get_btn["state"] = NORMAL
 
