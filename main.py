@@ -14,33 +14,36 @@ class Window(object):
         master.resizable(width=FALSE, height=FALSE)
         master.title("Youtube Downloader")
 
+        self.bg = "#2B2B2B"
+        self.fg = "#CECCBE"
         self.yt = ""
         self.video = ""
         self.tag = 0
 
         self.alert = Label(text="Wellcome to Youtube Downloader. Pleace insert Youtube Link.",
                            fg="red",
+                           bg=self.bg,
                            font="Helvetica 10 bold")
         self.alert.place(x=5, y=15)
 
-        linklabel = Label(text="Youtube Link : ", font="Helvetica 10 bold")
+        linklabel = Label(text="Youtube Link : ", font="Helvetica 10 bold", bg=self.bg, fg=self.fg)
         linklabel.place(x=5, y=50)
 
-        self.linkentry = Entry(width=75)
+        self.linkentry = Entry(width=75, bg=self.bg, fg=self.fg)
         self.linkentry.place(x=120, y=52)
 
-        pathlabel = Label(text="Download Path : ", font="Helvetica 10 bold")
+        pathlabel = Label(text="Download Path : ", font="Helvetica 10 bold", bg=self.bg, fg=self.fg)
         pathlabel.place(x=5, y=85)
 
-        self.pathentry = Entry(width=75)
+        self.pathentry = Entry(width=75, bg=self.bg, fg=self.fg)
         self.pathentry.place(x=120, y=87)
         self.pathentry.insert(0, "E:/Footage")
 
-        self.list = Listbox()
+        self.list = Listbox(bg=self.bg, fg=self.fg)
         self.list.place(x=120, y=115, width=455)
         self.list.bind('<<ListboxSelect>>', self.items_selected)
 
-        self.alertbottom = Label(text="Download : ", fg="red", font="Helvetica 10 bold")
+        self.alertbottom = Label(text="Download : ", bg=self.bg, fg=self.fg, font="Helvetica 10 bold")
         self.alertbottom.place(x=5, y=300)
 
         self.pb = ttk.Progressbar(
@@ -124,6 +127,7 @@ class Window(object):
 if __name__ == '__main__':
     root = Tk()
     root.geometry("600x400+300+300")
+    root.config(bg="#2B2B2B")
     window = Window(root)
     root.mainloop()
 
