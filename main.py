@@ -10,11 +10,9 @@ import threading
 
 class Window(object):
 
-    def __init__(self):
-        self.window = Tk()
-        self.window.resizable(width=FALSE, height=FALSE)
-        self.window.geometry("600x400+300+300")
-        self.window.title("Youtube Downloader")
+    def __init__(self, master):
+        master.resizable(width=FALSE, height=FALSE)
+        master.title("Youtube Downloader")
 
         self.yt = ""
         self.video = ""
@@ -46,7 +44,6 @@ class Window(object):
         self.alertbottom.place(x=5, y=300)
 
         self.pb = ttk.Progressbar(
-            self.window,
             orient='horizontal',
             mode='determinate',
             length=590
@@ -125,7 +122,9 @@ class Window(object):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    w = Window()
-    mainloop()
+    root = Tk()
+    root.geometry("600x400+300+300")
+    window = Window(root)
+    root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
