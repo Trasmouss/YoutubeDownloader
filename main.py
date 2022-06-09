@@ -13,6 +13,7 @@ class Window(object):
     def __init__(self, master):
         master.resizable(width=FALSE, height=FALSE)
         master.title("Youtube Downloader")
+        master.grid_columnconfigure((0, 1), weight=1)
 
         self.bg = "#2B2B2B"
         self.fg = "#CECCBE"
@@ -23,28 +24,34 @@ class Window(object):
         self.alert = Label(text="Wellcome to Youtube Downloader. Pleace insert Youtube Link.",
                            fg="red",
                            bg=self.bg,
-                           font="Helvetica 10 bold")
-        self.alert.place(x=5, y=15)
+                           font="Helvetica 10 bold",
+                           anchor="center",
+                           pady=20)
+        self.alert.grid(row=0, column=0, columnspan=2)
 
         linklabel = Label(text="Youtube Link : ", font="Helvetica 10 bold", bg=self.bg, fg=self.fg)
-        linklabel.place(x=5, y=50)
+        linklabel.grid(row=1, column=0, sticky=E)
 
         self.linkentry = Entry(width=75, bg=self.bg, fg=self.fg)
-        self.linkentry.place(x=120, y=52)
+        self.linkentry.grid(row=1, column=1)
 
         pathlabel = Label(text="Download Path : ", font="Helvetica 10 bold", bg=self.bg, fg=self.fg)
-        pathlabel.place(x=5, y=85)
+        pathlabel.grid(row=2, column=0)
 
         self.pathentry = Entry(width=75, bg=self.bg, fg=self.fg)
-        self.pathentry.place(x=120, y=87)
+        self.pathentry.grid(row=2, column=1)
+
         self.pathentry.insert(0, "E:/Footage")
 
-        self.list = Listbox(bg=self.bg, fg=self.fg)
-        self.list.place(x=120, y=115, width=455)
+        self.list = Listbox(bg=self.bg, fg=self.fg, width=75)
+        self.list.grid(row=3, column=1)
         self.list.bind('<<ListboxSelect>>', self.items_selected)
 
-        self.alertbottom = Label(text="Download : ", bg=self.bg, fg=self.fg, font="Helvetica 10 bold")
-        self.alertbottom.place(x=5, y=300)
+        self.alertbottomtitle = Label(text="Download : ", bg=self.bg, fg=self.fg, font="Helvetica 10 bold")
+        self.alertbottomtitle.grid(row=4, column=0)
+
+        self.alertbottom = Label(text="", bg=self.bg, fg=self.fg, font="Helvetica 10 bold")
+        self.alertbottom.grid(row=4, column=1)
 
         self.pb = ttk.Progressbar(
             orient='horizontal',
@@ -52,15 +59,15 @@ class Window(object):
             length=590
         )
 
-        self.pb.place(x=5000, y=0)
+        self.pb.grid(row=5, column=0, columnspan=2)
 
         self.pb["value"] = 0
 
         self.get_btn = Button(text="GET VIDEOS", command=self.get_videos)
-        self.get_btn.place(x=225, y=350)
+        self.get_btn.place(x=430, y=320)
 
         self.download_btn = Button(text="DOWNLOAD", command=self.download, state=DISABLED)
-        self.download_btn.place(x=325, y=350)
+        self.download_btn.place(x=516, y=320)
 
     def items_selected(self, event):
         # get selected indices
@@ -106,7 +113,6 @@ class Window(object):
 
     def downloadfile(self):
         self.download_btn["state"] = DISABLED
-        self.pb.place(x=5, y=320)
         stream = self.video.get_by_itag(self.tag)
         stream.download(self.pathentry.get(), skip_existing=False)
 
@@ -119,14 +125,13 @@ class Window(object):
     def on_complete(self, stream, path):
         self.alertbottom["text"] = path
         self.download_btn["state"] = NORMAL
-        self.pb.place(x=5000, y=0)
         self.pb["value"] = 0
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     root = Tk()
-    root.geometry("600x400+300+300")
+    root.geometry("600x350+300+300")
     root.config(bg="#2B2B2B")
     window = Window(root)
     root.mainloop()
