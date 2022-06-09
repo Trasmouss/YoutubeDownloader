@@ -15,6 +15,7 @@ class Window(object):
         master.title("Youtube Downloader")
         master.grid_columnconfigure((0, 1), weight=1)
 
+        self.select = []
         self.bg = "#2B2B2B"
         self.fg = "#CECCBE"
         self.yt = ""
@@ -55,7 +56,7 @@ class Window(object):
         self.alertbottomtitle.grid(row=4, column=0)
 
         self.alertbottom = Label(text="", bg=self.bg, fg=self.fg, font="Helvetica 10 bold")
-        self.alertbottom.grid(row=4, column=1)
+        self.alertbottom.grid(row=4, column=1, sticky=W)
 
         self.pb = ttk.Progressbar(
             orient='horizontal',
@@ -79,11 +80,9 @@ class Window(object):
         # get selected items
         selected = ",".join([self.list.get(i) for i in selected_indices])
         # msg = f'You selected: {selected}'
-        x = selected.split(" ")
-        self.alertbottom["text"] = "Download : " + selected
+        self.alertbottom["text"] = selected
         self.download_btn["state"] = NORMAL
-        self.tag = x[0]
-        # print(x[0])
+        self.tag = self.select[self.list.curselection()[0]]
 
     def set_videos(self):
         self.alert.config(text="Please Wait")
@@ -103,11 +102,11 @@ class Window(object):
     def set_video_list(self):
         self.video = self.video.order_by('resolution')
         for stream in self.video:
-            line = str(stream.itag) + \
-                   " RES : " + str(stream.resolution) + \
+            line = str(stream.resolution) + \
                    " FPS : " + str(stream.fps) + \
                    " ABR : " + str(stream.abr)
             self.list.insert(END, line)
+            self.select.insert(len(self.select), str(stream.itag))
             self.get_btn["state"] = NORMAL
 
     def download(self):
