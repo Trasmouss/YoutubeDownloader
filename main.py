@@ -15,6 +15,9 @@ class Window(object):
         master.title("Youtube Downloader")
         master.grid_columnconfigure((0, 1), weight=1)
 
+        icon = PhotoImage(file='icon.png')
+        master.iconphoto(False, icon)
+
         self.select = []
         self.bg = "#2B2B2B"
         self.fg = "#CECCBE"
